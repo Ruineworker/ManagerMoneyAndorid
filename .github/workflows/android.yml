@@ -1,0 +1,63 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            python3-pip python3-setuptools git zip unzip \
+            build-essential ccache libffi-dev libssl-dev zlib1g-dev \
+            libsqlite3-dev pkg-config autoconf automake libtool
+
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip
+          pip install "Cython==0.29.36" buildozer
+
+      - name: Build APK
+        run: |
+          set -o pipefail
+          buildozer android debug 2>&1 | tee build.log
+
+      - name: Show last log lines
+        if: always()
+        run: |
+          tail -n 200 build.log || true
+          grep -n "ERROR\|Traceback\|STDERR\|Command failed\|FAILURE:" build.log || true
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finwise-apk
+          path: bin/*.apk
