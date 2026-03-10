@@ -1,0 +1,35 @@
+<SplashScreen>:
+    md_bg_color: app.ui("bg")
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: "28dp"
+        spacing: "20dp"
+
+        Widget:
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            spacing: "10dp"
+            pos_hint: {"center_x": .5}
+
+            MDIcon:
+                icon: "wallet-outline"
+                halign: "center"
+                font_size: "64sp"
+                theme_text_color: "Custom"
+                text_color: app.ui("primary")
+
+            MDLabel:
+                text: "FinWise"
+                halign: "center"
+                font_style: "Headline"
+                theme_text_color: "Custom"
+                text_color: app.ui("text")
+
+            MDLabel:
+                text: "Быстрый учёт финансов"
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: app.ui("text_soft")
+        Widget:

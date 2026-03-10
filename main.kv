@@ -1,0 +1,21 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+ScreenManager:
+    transition: FadeTransition(duration=0.12)
+
+    SplashScreen:
+        name: "splash"
+    DashboardScreen:
+        name: "dashboard"
+    TransactionsScreen:
+        name: "transactions"
+    AddTransactionScreen:
+        name: "add_transaction"
+    CategoriesScreen:
+        name: "categories"
+    AccountsScreen:
+        name: "accounts"
+    AnalyticsScreen:
+        name: "analytics"
+    SettingsScreen:
+        name: "settings"

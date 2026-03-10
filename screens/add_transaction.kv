@@ -1,0 +1,202 @@
+<AddTransactionScreen>:
+    md_bg_color: app.ui("bg")
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: "96dp"
+            padding: "20dp", "18dp", "20dp", "10dp"
+
+            MDLabel:
+                id: title_label
+                text: "Новая операция"
+                font_style: "Title"
+                theme_text_color: "Custom"
+                text_color: app.ui("text")
+                bold: True
+            MDLabel:
+                text: "Заполните данные операции"
+                theme_text_color: "Custom"
+                text_color: app.ui("text_soft")
+
+        ScrollView:
+            do_scroll_x: False
+            bar_width: 0
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                spacing: "16dp"
+                padding: "16dp"
+
+                MDCard:
+                    style: "filled"
+                    md_bg_color: app.ui("surface")
+                    radius: [24, 24, 24, 24]
+                    padding: "18dp"
+                    size_hint_y: None
+                    height: content_box.minimum_height + dp(36)
+
+                    MDBoxLayout:
+                        id: content_box
+                        orientation: "vertical"
+                        adaptive_height: True
+                        spacing: "12dp"
+
+                        Button:
+                            text: "← Назад"
+                            size_hint_y: None
+                            height: "42dp"
+                            background_normal: ""
+                            background_down: ""
+                            background_color: app.ui("card_alt")
+                            color: app.ui("text")
+                            on_release: root.go_back()
+
+                        MDLabel:
+                            text: "Тип"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        Spinner:
+                            id: type_spinner
+                            text: "Расход"
+                            values: ["Расход", "Доход"]
+                            size_hint_y: None
+                            height: "48dp"
+                            background_color: app.ui("input")
+                            color: app.ui("text")
+
+                        MDLabel:
+                            text: "Сумма"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        MDTextField:
+                            id: amount_input
+                            hint_text: "Например: 1250"
+                            mode: "outlined"
+                            input_filter: "float"
+                            size_hint_y: None
+                            height: "52dp"
+
+                        MDLabel:
+                            text: "Категория"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        Spinner:
+                            id: category_spinner
+                            text: "Выберите категорию"
+                            size_hint_y: None
+                            height: "48dp"
+                            background_color: app.ui("input")
+                            color: app.ui("text")
+
+                        MDLabel:
+                            text: "Счёт"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        Spinner:
+                            id: account_spinner
+                            text: "Выберите счёт"
+                            size_hint_y: None
+                            height: "48dp"
+                            background_color: app.ui("input")
+                            color: app.ui("text")
+
+                        MDLabel:
+                            text: "Дата"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        MDTextField:
+                            id: date_input
+                            hint_text: "ДД-ММ-ГГГГ"
+                            mode: "outlined"
+                            size_hint_y: None
+                            height: "52dp"
+
+                        MDLabel:
+                            text: "Заметка"
+                            theme_text_color: "Custom"
+                            text_color: app.ui("text_soft")
+                        MDTextField:
+                            id: note_input
+                            hint_text: "Необязательно"
+                            mode: "outlined"
+                            size_hint_y: None
+                            height: "52dp"
+
+                        MDLabel:
+                            id: form_error
+                            text: ""
+                            theme_text_color: "Custom"
+                            text_color: app.ui("expense")
+                            size_hint_y: None
+                            height: self.texture_size[1] if self.text else 0
+
+                        Button:
+                            id: save_btn
+                            text: "Сохранить"
+                            size_hint_y: None
+                            height: "50dp"
+                            background_normal: ""
+                            background_down: ""
+                            background_color: app.ui("primary")
+                            color: 0.08, 0.14, 0.16, 1
+                            bold: True
+                            on_release: root.save_transaction()
+
+        MDCard:
+            style: "filled"
+            size_hint_y: None
+            height: "82dp"
+            radius: [26, 26, 0, 0]
+            md_bg_color: app.ui("nav")
+            padding: "6dp", "10dp", "6dp", "10dp"
+
+            MDGridLayout:
+                cols: 5
+                spacing: "6dp"
+
+                Button:
+                    text: "Главная"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: app.ui("nav_active") if root.name == "dashboard" else (0, 0, 0, 0)
+                    color: (0.12, 0.22, 0.24, 1) if root.name == "dashboard" else app.ui("text_soft")
+                    bold: root.name == "dashboard"
+                    on_release: app.root.current = "dashboard"
+                Button:
+                    text: "Операции"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: app.ui("nav_active") if root.name == "transactions" else (0, 0, 0, 0)
+                    color: (0.12, 0.22, 0.24, 1) if root.name == "transactions" else app.ui("text_soft")
+                    bold: root.name == "transactions"
+                    on_release: app.root.current = "transactions"
+                Button:
+                    text: "Аналитика"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: app.ui("nav_active") if root.name == "analytics" else (0, 0, 0, 0)
+                    color: (0.12, 0.22, 0.24, 1) if root.name == "analytics" else app.ui("text_soft")
+                    bold: root.name == "analytics"
+                    on_release: app.root.current = "analytics"
+                Button:
+                    text: "Счета"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: app.ui("nav_active") if root.name == "accounts" else (0, 0, 0, 0)
+                    color: (0.12, 0.22, 0.24, 1) if root.name == "accounts" else app.ui("text_soft")
+                    bold: root.name == "accounts"
+                    on_release: app.root.current = "accounts"
+                Button:
+                    text: "Настройки"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: app.ui("nav_active") if root.name == "settings" else (0, 0, 0, 0)
+                    color: (0.12, 0.22, 0.24, 1) if root.name == "settings" else app.ui("text_soft")
+                    bold: root.name == "settings"
+                    on_release: app.root.current = "settings"
+

@@ -1,0 +1,235 @@
+<TransactionRow@MDCard>:
+    trans_id: 0
+    icon_text: "tag"
+    category_text: ""
+    meta_text: ""
+    note_text: ""
+    amount_text: ""
+    amount_color: 1, 1, 1, 1
+    disabled_row: False
+    style: "filled"
+    md_bg_color: app.ui("card")
+    radius: [18, 18, 18, 18]
+    padding: "12dp"
+    size_hint_y: None
+    height: "112dp"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "8dp"
+
+        MDBoxLayout:
+            spacing: "10dp"
+
+            MDCard:
+                style: "filled"
+                md_bg_color: app.ui("card_alt")
+                radius: [14, 14, 14, 14]
+                size_hint: None, None
+                size: "40dp", "40dp"
+                padding: "8dp"
+
+                MDIcon:
+                    icon: root.icon_text
+                    theme_text_color: "Custom"
+                    text_color: app.ui("primary")
+                    halign: "center"
+                    valign: "middle"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "2dp"
+
+                MDLabel:
+                    text: root.category_text
+                    theme_text_color: "Custom"
+                    text_color: app.ui("text")
+                    bold: True
+                    shorten: True
+                    max_lines: 1
+
+                MDLabel:
+                    text: root.meta_text
+                    theme_text_color: "Custom"
+                    text_color: app.ui("text_soft")
+                    shorten: True
+                    max_lines: 1
+
+                MDLabel:
+                    text: root.note_text
+                    theme_text_color: "Custom"
+                    text_color: app.ui("text_soft")
+                    shorten: True
+                    max_lines: 1
+
+            MDLabel:
+                text: root.amount_text
+                halign: "right"
+                theme_text_color: "Custom"
+                text_color: root.amount_color
+                size_hint_x: .38
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: "30dp"
+            spacing: "8dp"
+            opacity: 0 if root.disabled_row else 1
+            disabled: root.disabled_row
+
+            Button:
+                text: "Изменить"
+                background_normal: ""
+                background_down: ""
+                background_color: app.ui("card_alt")
+                color: app.ui("text")
+                on_release: app.root.get_screen("transactions").edit_transaction(root.trans_id)
+
+            Button:
+                text: "Удалить"
+                background_normal: ""
+                background_down: ""
+                background_color: app.ui("card_alt")
+                color: app.ui("expense")
+                on_release: app.root.get_screen("transactions").delete_transaction(root.trans_id)
+
+            Widget:
+
+<TransactionsScreen>:
+    md_bg_color: app.ui("bg")
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint: 1, 1
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "176dp"
+                padding: "20dp", "18dp", "20dp", "12dp"
+                spacing: "10dp"
+
+                MDLabel:
+                    text: "Операции"
+                    font_style: "Title"
+                    theme_text_color: "Custom"
+                    text_color: app.ui("text")
+                    bold: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+                MDTextField:
+                    id: search_input
+                    hint_text: "Поиск по заметке или категории"
+                    mode: "outlined"
+                    size_hint_y: None
+                    height: "52dp"
+
+                GridLayout:
+                    cols: 3
+                    size_hint_y: None
+                    height: "44dp"
+                    spacing: "10dp"
+
+                    Button:
+                        id: all_btn
+                        text: "Все"
+                        background_normal: ""
+                        background_down: ""
+                        on_release: root.set_filter("all")
+
+                    Button:
+                        id: income_btn
+                        text: "Доходы"
+                        background_normal: ""
+                        background_down: ""
+                        on_release: root.set_filter("income")
+
+                    Button:
+                        id: expense_btn
+                        text: "Расходы"
+                        background_normal: ""
+                        background_down: ""
+                        on_release: root.set_filter("expense")
+
+                MDLabel:
+                    id: results_label
+                    text: "Найдено операций: 0"
+                    theme_text_color: "Custom"
+                    text_color: app.ui("text_soft")
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+            MDRecycleView:
+                id: transactions_rv
+                viewclass: "TransactionRow"
+
+                RecycleBoxLayout:
+                    default_size: None, dp(112)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: "vertical"
+                    spacing: dp(10)
+                    padding: dp(16), 0, dp(16), dp(96)
+
+            MDCard:
+                style: "filled"
+                size_hint_y: None
+                height: "82dp"
+                radius: [26, 26, 0, 0]
+                md_bg_color: app.ui("nav")
+                padding: "6dp", "10dp", "6dp", "10dp"
+
+                MDGridLayout:
+                    cols: 5
+                    spacing: "6dp"
+
+                    Button:
+                        text: "Главная"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+                        color: app.ui("text_soft")
+                        on_release: app.root.current = "dashboard"
+                    Button:
+                        text: "Операции"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: app.ui("nav_active")
+                        color: 0.12, 0.22, 0.24, 1
+                        bold: True
+                    Button:
+                        text: "Аналитика"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+                        color: app.ui("text_soft")
+                        on_release: app.root.current = "analytics"
+                    Button:
+                        text: "Счета"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+                        color: app.ui("text_soft")
+                        on_release: app.root.current = "accounts"
+                    Button:
+                        text: "Настройки"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+                        color: app.ui("text_soft")
+                        on_release: app.root.current = "settings"
+
+        Button:
+            text: "+"
+            size_hint: None, None
+            size: "56dp", "56dp"
+            pos_hint: {"right": .96, "y": .13}
+            background_normal: ""
+            background_down: ""
+            background_color: app.ui("primary")
+            color: 0.08, 0.14, 0.16, 1
+            font_size: "24sp"
+            bold: True
+            on_release: root.open_new()
